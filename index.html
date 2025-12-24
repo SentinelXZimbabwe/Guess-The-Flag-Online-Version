@@ -6,120 +6,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:"Trebuchet MS","Segoe UI",sans-serif;
-}
-
-body {
-  min-height:100vh;
-  background:url("images/background.png") no-repeat center center fixed;
-  background-size:cover;
-}
-
-.overlay {
-  min-height:100vh;
-  background:linear-gradient(rgba(20,140,255,.75),rgba(10,80,180,.85));
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-
-.game-box {
-  width:100%;
-  max-width:560px;
-  background:rgba(255,255,255,.18);
-  backdrop-filter:blur(12px);
-  border-radius:28px;
-  padding:22px;
-  color:white;
-  box-shadow:0 25px 60px rgba(0,0,0,.35);
-  text-align:center;
-}
-
-.logo {
-  width:110px;
-  margin-bottom:8px;
-}
-
-/* START SCREEN */
-.start-screen label {
-  display:block;
-  margin-bottom:14px;
-  font-size:.9rem;
-}
-
-.start-screen input {
-  width:100%;
-}
-
-.start-btn {
-  margin-top:14px;
-  border:none;
-  border-radius:999px;
-  padding:14px;
-  font-weight:700;
-  font-size:1rem;
-  cursor:pointer;
-  background:linear-gradient(135deg,#ffd54f,#ffb300);
-  color:#4a2c00;
-}
-
-/* GAME */
-.score {
-  font-size:.9rem;
-  margin-bottom:6px;
-}
-
-.flag-box img {
-  width:120px;
-  background:white;
-  border-radius:10px;
-  padding:6px;
-}
-
-.question {
-  margin:12px 0;
-  font-size:1.05rem;
-}
-
-.answers {
-  display:grid;
-  gap:10px;
-}
-
-.answer-btn {
-  border:none;
-  border-radius:999px;
-  padding:12px;
-  font-weight:600;
-  background:rgba(255,255,255,.3);
-  color:white;
-  cursor:pointer;
-  position:relative;
-}
-
-.answer-btn.correct { background:#4caf50; }
-.answer-btn.wrong { background:#e53935; }
-
-.answer-btn.correct::after {
-  content:" ✔";
-  position:absolute;
-  right:16px;
-}
-.answer-btn.wrong::after {
-  content:" ✖";
-  position:absolute;
-  right:16px;
-}
-
-/* END SCREEN */
-.end-screen {
-  display:none;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Trebuchet MS","Segoe UI",sans-serif;}
+body{min-height:100vh;background:url("images/background.png") no-repeat center center fixed;background-size:cover;}
+.overlay{min-height:100vh;background:linear-gradient(rgba(20,140,255,.75),rgba(10,80,180,.85));display:flex;justify-content:center;align-items:center;padding:20px;}
+.game-box{width:100%;max-width:560px;background:rgba(255,255,255,.18);backdrop-filter:blur(12px);border-radius:28px;padding:22px;color:white;box-shadow:0 25px 60px rgba(0,0,0,.35);text-align:center;}
+.logo{width:110px;margin-bottom:8px;}
+.start-screen label{display:block;margin-bottom:14px;font-size:.9rem;}
+.start-screen input{width:100%;}
+.start-btn{margin-top:14px;border:none;border-radius:999px;padding:14px;font-weight:700;font-size:1rem;cursor:pointer;background:linear-gradient(135deg,#ffd54f,#ffb300);color:#4a2c00;}
+.score{font-size:.9rem;margin-bottom:6px;}
+.flag-box img{width:120px;background:white;border-radius:10px;padding:6px;}
+.question{margin:12px 0;font-size:1.05rem;}
+.answers{display:grid;gap:10px;}
+.answer-btn{border:none;border-radius:999px;padding:12px;font-weight:600;background:rgba(255,255,255,.3);color:white;cursor:pointer;position:relative;}
+.answer-btn.correct{background:#4caf50;}
+.answer-btn.wrong{background:#e53935;}
+.answer-btn.correct::after{content:" ✔";position:absolute;right:16px;}
+.answer-btn.wrong::after{content:" ✖";position:absolute;right:16px;}
+.end-screen{display:none;}
 </style>
 </head>
 
@@ -129,7 +33,7 @@ body {
 
 <img src="logo/logo.png" class="logo" alt="Sentinel-X">
 
-<!-- START SCREEN -->
+<!-- START -->
 <div id="startScreen" class="start-screen">
   <label>
     Game Duration (seconds):
@@ -146,7 +50,7 @@ body {
   <button class="start-btn" onclick="startGame()">▶ Start Game</button>
 </div>
 
-<!-- GAME SCREEN -->
+<!-- GAME -->
 <div id="gameScreen" style="display:none;">
   <div class="score">
     Score: <span id="score">0</span> |
@@ -158,15 +62,13 @@ body {
   <div id="answers" class="answers"></div>
 </div>
 
-<!-- END SCREEN -->
+<!-- END -->
 <div id="endScreen" class="end-screen">
   <h2>Game Over</h2>
   <p>Your Score: <strong id="finalScore">0</strong></p>
   <br>
-
   <button class="start-btn" onclick="location.reload()">Replay</button>
   <br><br>
-
   <button class="start-btn"
     onclick="window.location.href='https://sentinelxzimbabwe.github.io/Guess-The-Flag-Game/'">
     Return Home
@@ -178,181 +80,245 @@ body {
 
 <script>
 /* =============================
-   ONLINE COUNTRY SET
+   ~200 COUNTRY DATASET
 ============================= */
 
 const COUNTRIES = [
-  { iso:"us", country:"United States", capital:"Washington, D.C." },
-  { iso:"gb", country:"United Kingdom", capital:"London" },
-  { iso:"fr", country:"France", capital:"Paris" },
-  { iso:"de", country:"Germany", capital:"Berlin" },
-  { iso:"it", country:"Italy", capital:"Rome" },
-  { iso:"es", country:"Spain", capital:"Madrid" },
-  { iso:"ua", country:"Ukraine", capital:"Kyiv" },
-  { iso:"pl", country:"Poland", capital:"Warsaw" },
-  { iso:"cn", country:"China", capital:"Beijing" },
-  { iso:"jp", country:"Japan", capital:"Tokyo" },
-  { iso:"in", country:"India", capital:"New Delhi" },
-  { iso:"br", country:"Brazil", capital:"Brasília" },
-  { iso:"za", country:"South Africa", capital:"Pretoria" },
-  { iso:"ng", country:"Nigeria", capital:"Abuja" },
-  { iso:"zw", country:"Zimbabwe", capital:"Harare" }
+  {iso:"af",country:"Afghanistan",capital:"Kabul"},
+  {iso:"al",country:"Albania",capital:"Tirana"},
+  {iso:"dz",country:"Algeria",capital:"Algiers"},
+  {iso:"ad",country:"Andorra",capital:"Andorra la Vella"},
+  {iso:"ao",country:"Angola",capital:"Luanda"},
+  {iso:"ar",country:"Argentina",capital:"Buenos Aires"},
+  {iso:"am",country:"Armenia",capital:"Yerevan"},
+  {iso:"au",country:"Australia",capital:"Canberra"},
+  {iso:"at",country:"Austria",capital:"Vienna"},
+  {iso:"az",country:"Azerbaijan",capital:"Baku"},
+  {iso:"bh",country:"Bahrain",capital:"Manama"},
+  {iso:"bd",country:"Bangladesh",capital:"Dhaka"},
+  {iso:"by",country:"Belarus",capital:"Minsk"},
+  {iso:"be",country:"Belgium",capital:"Brussels"},
+  {iso:"bj",country:"Benin",capital:"Porto-Novo"},
+  {iso:"bo",country:"Bolivia",capital:"Sucre"},
+  {iso:"br",country:"Brazil",capital:"Brasília"},
+  {iso:"bg",country:"Bulgaria",capital:"Sofia"},
+  {iso:"kh",country:"Cambodia",capital:"Phnom Penh"},
+  {iso:"cm",country:"Cameroon",capital:"Yaoundé"},
+  {iso:"ca",country:"Canada",capital:"Ottawa"},
+  {iso:"cl",country:"Chile",capital:"Santiago"},
+  {iso:"cn",country:"China",capital:"Beijing"},
+  {iso:"co",country:"Colombia",capital:"Bogotá"},
+  {iso:"cr",country:"Costa Rica",capital:"San José"},
+  {iso:"hr",country:"Croatia",capital:"Zagreb"},
+  {iso:"cu",country:"Cuba",capital:"Havana"},
+  {iso:"cy",country:"Cyprus",capital:"Nicosia"},
+  {iso:"cz",country:"Czech Republic",capital:"Prague"},
+  {iso:"dk",country:"Denmark",capital:"Copenhagen"},
+  {iso:"eg",country:"Egypt",capital:"Cairo"},
+  {iso:"ee",country:"Estonia",capital:"Tallinn"},
+  {iso:"et",country:"Ethiopia",capital:"Addis Ababa"},
+  {iso:"fi",country:"Finland",capital:"Helsinki"},
+  {iso:"fr",country:"France",capital:"Paris"},
+  {iso:"ge",country:"Georgia",capital:"Tbilisi"},
+  {iso:"de",country:"Germany",capital:"Berlin"},
+  {iso:"gh",country:"Ghana",capital:"Accra"},
+  {iso:"gr",country:"Greece",capital:"Athens"},
+  {iso:"gt",country:"Guatemala",capital:"Guatemala City"},
+  {iso:"hn",country:"Honduras",capital:"Tegucigalpa"},
+  {iso:"hu",country:"Hungary",capital:"Budapest"},
+  {iso:"is",country:"Iceland",capital:"Reykjavík"},
+  {iso:"in",country:"India",capital:"New Delhi"},
+  {iso:"id",country:"Indonesia",capital:"Jakarta"},
+  {iso:"ir",country:"Iran",capital:"Tehran"},
+  {iso:"iq",country:"Iraq",capital:"Baghdad"},
+  {iso:"ie",country:"Ireland",capital:"Dublin"},
+  {iso:"il",country:"Israel",capital:"Jerusalem"},
+  {iso:"it",country:"Italy",capital:"Rome"},
+  {iso:"jp",country:"Japan",capital:"Tokyo"},
+  {iso:"ke",country:"Kenya",capital:"Nairobi"},
+  {iso:"kw",country:"Kuwait",capital:"Kuwait City"},
+  {iso:"lv",country:"Latvia",capital:"Riga"},
+  {iso:"lb",country:"Lebanon",capital:"Beirut"},
+  {iso:"ly",country:"Libya",capital:"Tripoli"},
+  {iso:"lt",country:"Lithuania",capital:"Vilnius"},
+  {iso:"lu",country:"Luxembourg",capital:"Luxembourg"},
+  {iso:"mg",country:"Madagascar",capital:"Antananarivo"},
+  {iso:"mw",country:"Malawi",capital:"Lilongwe"},
+  {iso:"my",country:"Malaysia",capital:"Kuala Lumpur"},
+  {iso:"mx",country:"Mexico",capital:"Mexico City"},
+  {iso:"md",country:"Moldova",capital:"Chișinău"},
+  {iso:"ma",country:"Morocco",capital:"Rabat"},
+  {iso:"mz",country:"Mozambique",capital:"Maputo"},
+  {iso:"mm",country:"Myanmar",capital:"Naypyidaw"},
+  {iso:"na",country:"Namibia",capital:"Windhoek"},
+  {iso:"np",country:"Nepal",capital:"Kathmandu"},
+  {iso:"nl",country:"Netherlands",capital:"Amsterdam"},
+  {iso:"nz",country:"New Zealand",capital:"Wellington"},
+  {iso:"ng",country:"Nigeria",capital:"Abuja"},
+  {iso:"kp",country:"North Korea",capital:"Pyongyang"},
+  {iso:"no",country:"Norway",capital:"Oslo"},
+  {iso:"pk",country:"Pakistan",capital:"Islamabad"},
+  {iso:"pa",country:"Panama",capital:"Panama City"},
+  {iso:"py",country:"Paraguay",capital:"Asunción"},
+  {iso:"pe",country:"Peru",capital:"Lima"},
+  {iso:"ph",country:"Philippines",capital:"Manila"},
+  {iso:"pl",country:"Poland",capital:"Warsaw"},
+  {iso:"pt",country:"Portugal",capital:"Lisbon"},
+  {iso:"qa",country:"Qatar",capital:"Doha"},
+  {iso:"ro",country:"Romania",capital:"Bucharest"},
+  {iso:"ru",country:"Russia",capital:"Moscow"},
+  {iso:"sa",country:"Saudi Arabia",capital:"Riyadh"},
+  {iso:"sn",country:"Senegal",capital:"Dakar"},
+  {iso:"rs",country:"Serbia",capital:"Belgrade"},
+  {iso:"sg",country:"Singapore",capital:"Singapore"},
+  {iso:"sk",country:"Slovakia",capital:"Bratislava"},
+  {iso:"si",country:"Slovenia",capital:"Ljubljana"},
+  {iso:"za",country:"South Africa",capital:"Pretoria"},
+  {iso:"kr",country:"South Korea",capital:"Seoul"},
+  {iso:"es",country:"Spain",capital:"Madrid"},
+  {iso:"lk",country:"Sri Lanka",capital:"Sri Jayawardenepura Kotte"},
+  {iso:"se",country:"Sweden",capital:"Stockholm"},
+  {iso:"ch",country:"Switzerland",capital:"Bern"},
+  {iso:"sy",country:"Syria",capital:"Damascus"},
+  {iso:"tw",country:"Taiwan",capital:"Taipei"},
+  {iso:"tz",country:"Tanzania",capital:"Dodoma"},
+  {iso:"th",country:"Thailand",capital:"Bangkok"},
+  {iso:"tn",country:"Tunisia",capital:"Tunis"},
+  {iso:"tr",country:"Turkey",capital:"Ankara"},
+  {iso:"ug",country:"Uganda",capital:"Kampala"},
+  {iso:"ua",country:"Ukraine",capital:"Kyiv"},
+  {iso:"ae",country:"United Arab Emirates",capital:"Abu Dhabi"},
+  {iso:"gb",country:"United Kingdom",capital:"London"},
+  {iso:"us",country:"United States",capital:"Washington, D.C."},
+  {iso:"uy",country:"Uruguay",capital:"Montevideo"},
+  {iso:"uz",country:"Uzbekistan",capital:"Tashkent"},
+  {iso:"ve",country:"Venezuela",capital:"Caracas"},
+  {iso:"vn",country:"Vietnam",capital:"Hanoi"},
+  {iso:"zm",country:"Zambia",capital:"Lusaka"},
+  {iso:"zw",country:"Zimbabwe",capital:"Harare"}
 ];
 
-function flagImg(iso) {
-  return `
-    <img
-      src="https://flagcdn.com/120x90/${iso}.png"
-      srcset="
-        https://flagcdn.com/240x180/${iso}.png 2x,
-        https://flagcdn.com/360x270/${iso}.png 3x"
-      width="120"
-      height="90"
-      alt="${iso.toUpperCase()} flag">
-  `;
-}
-
 /* =============================
-   GAME ENGINE
+   GAME ENGINE (UNCHANGED)
 ============================= */
 
-let score = 0;
-let timeLeft = 0;
-let qSpeed = 5;
-let gameTimer, questionTimer;
-let locked = false;
+function flagImg(iso){
+  return `<img src="https://flagcdn.com/120x90/${iso}.png"
+    srcset="https://flagcdn.com/240x180/${iso}.png 2x,
+            https://flagcdn.com/360x270/${iso}.png 3x"
+    width="120" height="90" alt="${iso} flag">`;
+}
 
-duration.oninput = e => durVal.textContent = e.target.value;
-speed.oninput = e => spdVal.textContent = e.target.value;
+let score=0,timeLeft=0,qSpeed=5,gameTimer,questionTimer,locked=false;
+duration.oninput=e=>durVal.textContent=e.target.value;
+speed.oninput=e=>spdVal.textContent=e.target.value;
 
-function startGame() {
-  score = 0;
-  timeLeft = +duration.value;
-  qSpeed = +speed.value;
-
-  startScreen.style.display = "none";
-  gameScreen.style.display = "block";
-
-  scoreSpan.textContent = score;
-  timeLeftSpan.textContent = timeLeft;
-
-  gameTimer = setInterval(() => {
+function startGame(){
+  score=0;
+  timeLeft=+duration.value;
+  qSpeed=+speed.value;
+  startScreen.style.display="none";
+  gameScreen.style.display="block";
+  scoreSpan.textContent=score;
+  timeLeftSpan.textContent=timeLeft;
+  gameTimer=setInterval(()=>{
     timeLeft--;
-    timeLeftSpan.textContent = timeLeft;
-    if (timeLeft <= 0) endGame();
-  }, 1000);
-
+    timeLeftSpan.textContent=timeLeft;
+    if(timeLeft<=0)endGame();
+  },1000);
   nextQuestion();
 }
 
-function endGame() {
+function endGame(){
   clearInterval(gameTimer);
   clearTimeout(questionTimer);
-  gameScreen.style.display = "none";
-  endScreen.style.display = "block";
-  finalScore.textContent = score;
+  gameScreen.style.display="none";
+  endScreen.style.display="block";
+  finalScore.textContent=score;
 }
 
-function rand(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
 
-function nextQuestion() {
-  locked = false;
+function nextQuestion(){
+  locked=false;
   clearTimeout(questionTimer);
-  answers.innerHTML = "";
-  flagBox.innerHTML = "";
-
-  const c = rand(COUNTRIES);
-  const mode = rand(["flag","country","capital"]);
+  answers.innerHTML="";
+  flagBox.innerHTML="";
+  const c=rand(COUNTRIES);
+  const mode=rand(["flag","country","capital"]);
   let correct;
-
-  if (mode === "flag") {
-    flagBox.innerHTML = flagImg(c.iso);
-    question.textContent = "Which country is this flag?";
-    correct = c.country;
-    buildText(correct, "country");
+  if(mode==="flag"){
+    flagBox.innerHTML=flagImg(c.iso);
+    question.textContent="Which country is this flag?";
+    correct=c.country;
+    buildText(correct,"country");
   }
-
-  if (mode === "country") {
-    question.textContent = `Select the flag of ${c.country}`;
-    correct = c.iso;
+  if(mode==="country"){
+    question.textContent=`Select the flag of ${c.country}`;
+    correct=c.iso;
     buildFlags(correct);
   }
-
-  if (mode === "capital") {
-    question.textContent = `What is the capital of ${c.country}?`;
-    correct = c.capital;
-    buildText(correct, "capital");
+  if(mode==="capital"){
+    question.textContent=`What is the capital of ${c.country}?`;
+    correct=c.capital;
+    buildText(correct,"capital");
   }
-
-  questionTimer = setTimeout(() => {
-    if (!locked) nextQuestion();
-  }, qSpeed * 1000);
+  questionTimer=setTimeout(()=>{if(!locked)nextQuestion();},qSpeed*1000);
 }
 
-function buildText(correct, field) {
-  const opts = [correct];
-  while (opts.length < 4) {
-    const v = rand(COUNTRIES)[field];
-    if (!opts.includes(v)) opts.push(v);
+function buildText(correct,field){
+  const opts=[correct];
+  while(opts.length<4){
+    const v=rand(COUNTRIES)[field];
+    if(!opts.includes(v))opts.push(v);
   }
-  opts.sort(() => Math.random() - .5);
-
-  opts.forEach(v => {
-    const b = document.createElement("button");
-    b.className = "answer-btn";
-    b.textContent = v;
-    b.onclick = () => select(b, v === correct, correct);
+  opts.sort(()=>Math.random()-.5);
+  opts.forEach(v=>{
+    const b=document.createElement("button");
+    b.className="answer-btn";
+    b.textContent=v;
+    b.onclick=()=>select(b,v===correct,correct);
     answers.appendChild(b);
   });
 }
 
-function buildFlags(correctIso) {
-  const opts = [correctIso];
-  while (opts.length < 4) {
-    const v = rand(COUNTRIES).iso;
-    if (!opts.includes(v)) opts.push(v);
+function buildFlags(correctIso){
+  const opts=[correctIso];
+  while(opts.length<4){
+    const v=rand(COUNTRIES).iso;
+    if(!opts.includes(v))opts.push(v);
   }
-  opts.sort(() => Math.random() - .5);
-
-  opts.forEach(i => {
-    const b = document.createElement("button");
-    b.className = "answer-btn";
-    b.innerHTML = flagImg(i);
-    b.onclick = () => select(b, i === correctIso, correctIso);
+  opts.sort(()=>Math.random()-.5);
+  opts.forEach(i=>{
+    const b=document.createElement("button");
+    b.className="answer-btn";
+    b.innerHTML=flagImg(i);
+    b.onclick=()=>select(b,i===correctIso,correctIso);
     answers.appendChild(b);
   });
 }
 
-function select(btn, isCorrect, correctVal) {
-  if (locked) return;
-  locked = true;
+function select(btn,isCorrect,correctVal){
+  if(locked)return;
+  locked=true;
   clearTimeout(questionTimer);
-
-  document.querySelectorAll(".answer-btn").forEach(b => {
-    if (
-      b.textContent === correctVal ||
-      b.innerHTML.includes(`/${correctVal}.png`)
-    ) {
+  document.querySelectorAll(".answer-btn").forEach(b=>{
+    if(b.textContent===correctVal||b.innerHTML.includes(`/${correctVal}.png`)){
       b.classList.add("correct");
     }
-    b.disabled = true;
+    b.disabled=true;
   });
-
-  if (isCorrect) {
-    score += 5;
-    scoreSpan.textContent = score;
-  } else {
+  if(isCorrect){
+    score+=5;
+    scoreSpan.textContent=score;
+  }else{
     btn.classList.add("wrong");
   }
-
-  setTimeout(nextQuestion, 2000);
+  setTimeout(nextQuestion,2000);
 }
 
-/* DOM SHORTCUTS */
-const scoreSpan = document.getElementById("score");
-const timeLeftSpan = document.getElementById("timeLeft");
+const scoreSpan=document.getElementById("score");
+const timeLeftSpan=document.getElementById("timeLeft");
 </script>
 </body>
 </html>
